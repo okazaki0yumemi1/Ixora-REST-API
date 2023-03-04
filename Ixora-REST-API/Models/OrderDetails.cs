@@ -2,8 +2,10 @@
 {
     public class OrderDetails
     {
-        public int GoodsID { get; set; }
-        public int OrderID { get; set; }
+        public int GoodsId { get; set; } //Foreign key
+        public Goods Goods { get; set; } //Reference
+        public int OrderId { get; set; } //Foreign key
+        public Order Order { get; set; } //Reference
         public float ItemPrice { get; set; }
         public int Count { get; set; }
 

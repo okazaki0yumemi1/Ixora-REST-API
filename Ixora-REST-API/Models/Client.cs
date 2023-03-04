@@ -2,15 +2,14 @@
 {
     public class Client
     {
-        public Guid Id { get; set; } //ID клиента
+        public int Id { get; set; }
         public FullName ClientName { get; set; } //ФИО
-        public string PhoneNumber { get; set; } //Номер телефона
-
+        public string PhoneNumber { get; set; } //Phone number
         public Client()
         {
-            Id = new Guid();
+
         }
-        public Client(Guid id, FullName clientName, string phoneNumber)
+        public Client(int id, FullName clientName, string phoneNumber)
         {
             Id = id;
             ClientName = clientName;

@@ -2,7 +2,7 @@
 {
     public class GoodsType
     {
-        public Guid GroupID { get; set; }
+        public int ID { get; set; }
         public string GroupName { get; set; }
 
     }
