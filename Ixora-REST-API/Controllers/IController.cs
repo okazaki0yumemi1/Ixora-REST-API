@@ -9,6 +9,6 @@ namespace Ixora_REST_API.Controllers
         Task<IActionResult> Delete(int Id);
         Task<IActionResult> GetAll();
         Task<IActionResult> GetByID(int Id);
-        Task<IActionResult> Update<T>(int Id, T obj);
+        Task<IActionResult> Update(int Id, T obj);
     }
 }
