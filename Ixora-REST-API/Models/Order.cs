@@ -2,7 +2,7 @@
 
 namespace Ixora_REST_API.Models
 {
-    public class Order
+    public class Order : Entity
     {
         //public Guid ID { get; set; }
         public int ID { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Ixora_REST_API.Models
 {
-    public class OrderDetails
+    public class OrderDetails : Entity
     {
         public int Id { get; set; }
         public int GoodsId { get; set; } //Foreign key

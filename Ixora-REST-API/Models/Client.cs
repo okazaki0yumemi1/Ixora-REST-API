@@ -1,6 +1,6 @@
 ﻿namespace Ixora_REST_API.Models
 {
-    public class Client
+    public class Client : Entity
     {
         public int Id { get; set; }
         //public FullName ClientName { get; set; } //ФИО

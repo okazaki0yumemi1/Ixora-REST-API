@@ -2,7 +2,7 @@
 
 namespace Ixora_REST_API.Models
 {
-    public class Goods
+    public class Goods : Entity
     {
         //public Guid Id { get; set; }
         public int Id { get; set; }
