@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ixora_REST_API.Controllers
 {
-    public class ClientsController : ControllerBase, IController
+    public class ClientsController : ControllerBase, IController<Client>
     {
         private readonly ClientsDbOperations _dbOperations;
         public ClientsController(ClientsDbOperations dbOperations)

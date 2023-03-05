@@ -1,6 +1,6 @@
 ﻿namespace Ixora_REST_API.Models
 {
-    public interface Entity
+    public abstract class Entity
     {
         int Id { get; set; }
     }
