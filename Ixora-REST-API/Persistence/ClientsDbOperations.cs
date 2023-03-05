@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ixora_REST_API.Persistence
 {
-    public class ClientsDbOperations : IDbOperations
+    public class ClientsDbOperations : IDbOperations<Client>
     {
         private readonly DatabaseContext _dbContext;
         public ClientsDbOperations(DatabaseContext dbContext)

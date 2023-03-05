@@ -15,7 +15,6 @@ namespace Ixora_REST_API.Controllers
         [HttpGet(Routes.Clients.Get)]
         public async Task<IActionResult> GetByID([FromRoute] int clientId)
         {
-            //var client = _clients.SingleOrDefault(x => x.Id == clientId);
             var client = await _dbOperations.GetByIDAsync(clientId);
             if (client == null) return NotFound();
             return Ok(client);
@@ -28,7 +27,6 @@ namespace Ixora_REST_API.Controllers
         [HttpPost(Routes.Clients.CreateClient)]
         public async Task<IActionResult> Create([FromBody] Client client)
         {
-            //_clients.Add(client);
             await _dbOperations.CreateAsync(client);
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
             var fullUrl = baseUrl + "/" + Routes.Clients.Get.Replace("{clientId}", client.Id.ToString());
@@ -44,7 +42,7 @@ namespace Ixora_REST_API.Controllers
                 ClientName = client.ClientName,
                 PhoneNumber = client.PhoneNumber
             };
-            var updated = await _dbOperations.UpdateAsync(newClient);//_clients.SingleOrDefault(x => x.Id == clientId) != null;
+            var updated = await _dbOperations.UpdateAsync(newClient);
             if (updated) { return Ok(newClient); }
             else return NotFound();
         }
