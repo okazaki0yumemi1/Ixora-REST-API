@@ -3,20 +3,34 @@ using Ixora_REST_API.Persistence;
 using Ixora_REST_API.ApiRoutes;
 using Microsoft.AspNetCore.Mvc;
 using static Ixora_REST_API.ApiRoutes.Routes;
+using System.Drawing.Drawing2D;
 
 namespace Ixora_REST_API.Controllers
 {
     public class OrdersController : ControllerBase, IController<Order>
     {
         private readonly OrdersDbOperations _dbOperations;
-        public OrdersController(OrdersDbOperations dbOperations)
+        private readonly GoodsDbOperations _goodsDbOperations;
+        public OrdersController(OrdersDbOperations dbOperations, GoodsDbOperations goodsDbOperations)
         {
             _dbOperations = dbOperations;
+            _goodsDbOperations = goodsDbOperations;
         }
         [HttpPost(Routes.Orders.CreateOrder)]
         public async Task<IActionResult> Create([FromBody] Order order)
         {
             //Implement inventory check
+            var orderDetails = order.OrderDetails.ToList();
+            foreach (var thing in orderDetails)
+            {
+                var goodsRequest = await _goodsDbOperations.GetByIDAsync(thing.GoodsId);
+                if (thing.Count > goodsRequest.LeftInStock) return BadRequest();
+                else
+                {
+                    goodsRequest.LeftInStock -= thing.Count;
+                    await _goodsDbOperations.UpdateAsync(goodsRequest);
+                }
+            }
             await _dbOperations.CreateAsync(order);
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
             var fullUrl = baseUrl + "/" + Routes.Clients.Get.Replace("{orderId}", order.ID.ToString());
@@ -46,7 +60,7 @@ namespace Ixora_REST_API.Controllers
         {
             var newOrder = new Order
             {
-                ID = Id,
+                //ID = Id,
                 ClientId = obj.ClientId,
                 OrderDetails = obj.OrderDetails,
                 //OrderDetailsId = obj.OrderDetailsId,

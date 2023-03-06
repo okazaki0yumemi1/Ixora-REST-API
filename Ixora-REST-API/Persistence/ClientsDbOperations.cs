@@ -24,6 +24,10 @@ namespace Ixora_REST_API.Persistence
         {
             return await _dbContext.Clients.SingleOrDefaultAsync(x => x.Id == ID);
         }
+        public async Task<List<Models.Order>> GetClientOrders(int clientId)
+        {
+            return await _dbContext.Orders.Where(x => x.ClientId == clientId).ToListAsync();
+        }
         public async Task<bool> UpdateAsync(Client newClient)
         {
             _dbContext.Clients.Update(newClient);

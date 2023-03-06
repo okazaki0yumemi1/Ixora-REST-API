@@ -46,7 +46,7 @@ namespace Ixora_REST_API.Controllers
             var newGroup = new GoodsType
             {
                 GroupName = obj.GroupName,
-                ID = Id,
+                //ID = Id,
             };
             var updated = await _dbOperations.UpdateAsync(newGroup);
             if (updated) { return Ok(newGroup); }

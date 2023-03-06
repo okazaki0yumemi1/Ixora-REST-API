@@ -4,6 +4,7 @@ namespace Ixora_REST_API.Models
 {
     public class Order : Entity
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public int ClientId { get; set; } //Foreign key
         public Client Client { get; set; } //Reference

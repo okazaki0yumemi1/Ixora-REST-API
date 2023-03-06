@@ -45,7 +45,7 @@ namespace Ixora_REST_API.Controllers
         {
             var newThing = new Models.Goods
             {
-                Id = Id,
+                //Id = Id,
                 GoodsType = obj.GoodsType,
                 GoodsTypeID = obj.GoodsTypeID,
                 LeftInStock = obj.LeftInStock,

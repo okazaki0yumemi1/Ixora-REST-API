@@ -9,6 +9,7 @@
             public const string Get = "api/clients/{clientId}";
             public const string Update = "api/clients/{clientId}";
             public const string Delete = "api/clients/{clientId}";
+            public const string GetClientOrders = "api/clients/{clientId}/orders";
         }
         public static class Orders
         {

@@ -19,6 +19,13 @@ namespace Ixora_REST_API.Controllers
             if (client == null) return NotFound();
             return Ok(client);
         }
+        [HttpGet(Routes.Clients.GetClientOrders)]
+        public async Task<IActionResult> GetClientOrders([FromRoute] int clientId)
+        {
+            var orders = await _dbOperations.GetClientOrders(clientId);
+            if (orders == null) return NoContent();
+            return Ok(orders);
+        }
         [HttpGet(Routes.Clients.GetAll)]
         public async Task<IActionResult> GetAll()
         {
@@ -38,7 +45,7 @@ namespace Ixora_REST_API.Controllers
         {
             var newClient = new Client
             {
-                Id = clientId,
+                //Id = clientId,
                 ClientName = client.ClientName,
                 PhoneNumber = client.PhoneNumber
             };

@@ -4,6 +4,7 @@ namespace Ixora_REST_API.Models
 {
     public class Goods : Entity
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int GoodsTypeID { get; set; } //Foreign key
         public GoodsType GoodsType { get; set; } //Reference

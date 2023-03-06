@@ -54,7 +54,7 @@ namespace Ixora_REST_API.Controllers
         {
             var newDetails = new OrderDetails
             {
-                Id = Id,
+                //Id = Id,
                 Count = obj.Count,
                 Goods = obj.Goods,
                 GoodsId = obj.GoodsId,

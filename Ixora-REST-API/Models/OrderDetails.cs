@@ -1,7 +1,10 @@
-﻿namespace Ixora_REST_API.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Ixora_REST_API.Models
 {
     public class OrderDetails : Entity
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int GoodsId { get; set; } //Foreign key
         public Goods Goods { get; set; } //Reference
