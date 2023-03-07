@@ -7,6 +7,7 @@ using static Ixora_REST_API.ApiRoutes.Routes;
 
 namespace Ixora_REST_API.Controllers
 {
+    [ApiController]
     public class OrderDetailsController : ControllerBase, IController<OrderDetails>
     {
         private readonly OrderDetailsDbOperations _dbOperations;
@@ -30,6 +31,7 @@ namespace Ixora_REST_API.Controllers
             if (deleted) return NoContent();
             else return NotFound();
         }
+        [HttpDelete(Routes.Details.GetAll + "/meow")]
         public async Task<IActionResult> GetAll()
         {
             return NotFound(); //it does not make any sense

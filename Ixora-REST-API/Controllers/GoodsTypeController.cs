@@ -6,6 +6,7 @@ using static Ixora_REST_API.ApiRoutes.Routes;
 
 namespace Ixora_REST_API.Controllers
 {
+    [ApiController]
     public class GoodsTypeController : ControllerBase, IController<Models.GoodsType>
     {
         private readonly GoodsTypeDbOperations _dbOperations;

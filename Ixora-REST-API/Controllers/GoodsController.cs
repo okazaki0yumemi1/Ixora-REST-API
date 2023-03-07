@@ -6,6 +6,7 @@ using static Ixora_REST_API.ApiRoutes.Routes;
 
 namespace Ixora_REST_API.Controllers
 {
+    [ApiController]
     public class GoodsController : ControllerBase, IController<Models.Goods>
     {
         private readonly GoodsDbOperations _dbOperations;
@@ -40,7 +41,7 @@ namespace Ixora_REST_API.Controllers
             if (goods == null) return NotFound();
             return Ok(goods);
         }
-
+        [HttpPut(Routes.Goods.Update)]
         public async Task<IActionResult> Update([FromRoute] int Id, [FromBody] Models.Goods obj)
         {
             var newThing = new Models.Goods

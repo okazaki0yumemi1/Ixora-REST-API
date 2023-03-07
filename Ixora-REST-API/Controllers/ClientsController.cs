@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ixora_REST_API.Controllers
 {
+    [Route("/api/clients")]
+    [ApiController]
     public class ClientsController : ControllerBase, IController<Client>
     {
         private readonly ClientsDbOperations _dbOperations;
@@ -33,7 +35,7 @@ namespace Ixora_REST_API.Controllers
         }
         [HttpPost(Routes.Clients.CreateClient)]
         public async Task<IActionResult> Create([FromBody] Client client)
-        {
+         {
             await _dbOperations.CreateAsync(client);
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
             var fullUrl = baseUrl + "/" + Routes.Clients.Get.Replace("{clientId}", client.Id.ToString());

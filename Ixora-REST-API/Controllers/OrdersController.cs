@@ -7,6 +7,7 @@ using System.Drawing.Drawing2D;
 
 namespace Ixora_REST_API.Controllers
 {
+    [ApiController]
     public class OrdersController : ControllerBase, IController<Order>
     {
         private readonly OrdersDbOperations _dbOperations;
