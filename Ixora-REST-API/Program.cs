@@ -41,6 +41,4 @@ app.MapControllers();
 
 //    TestDataInit.Seed(services);
 //}
-
-
 app.Run();

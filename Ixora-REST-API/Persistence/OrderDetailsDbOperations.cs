@@ -26,12 +26,12 @@ namespace Ixora_REST_API.Persistence
             {
                 Order newOrder = new Order
                 {
-                    Client = order.Client,
-                    ClientId = order.ClientId,
+                    //Client = order.Client,
+                    //ClientId = order.ClientId,
                     CreationDate = order.CreationDate,
-                    ID = order.ID,
-                    IsComplete = order.IsComplete,
-                    OrderDetails = order.OrderDetails.Where(x => x.Id != ID)
+                    //ID = order.ID,
+                    //IsComplete = order.IsComplete,
+                    //OrderDetails = order.OrderDetails.Where(x => x.Id != ID)
                 };
                 await _dbContext.Orders.AddAsync(newOrder);
                 _dbContext.Orders.Remove(order);
@@ -60,18 +60,8 @@ namespace Ixora_REST_API.Persistence
             var order = await _dbContext.Orders.FirstOrDefaultAsync(x => x.OrderDetails.Any(y => y.Id == obj.Id) == true);
             if (order != null)
             {
-                Order newOrder = new Order
-                {
-                    Client = order.Client,
-                    ClientId = order.ClientId,
-                    CreationDate = order.CreationDate,
-                    ID = order.ID,
-                    IsComplete = order.IsComplete,
-                    OrderDetails = order.OrderDetails.Where(x => x.Id != obj.Id),
-                };
-                newOrder.OrderDetails.Append(obj);
-                await _dbContext.Orders.AddAsync(newOrder);
-                _dbContext.Orders.Remove(order);
+                order.UpdateDetails(obj);
+                _dbContext.Orders.Update(order);
                 var changes = await _dbContext.SaveChangesAsync();
                 return (changes > 1);
             }

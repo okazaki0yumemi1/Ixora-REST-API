@@ -15,7 +15,7 @@ namespace Ixora_REST_API.Controllers
             _dbOperations = dbOperations;
         }
         [HttpPost(Routes.Goods.Create)]
-        public async Task<IActionResult> Create(Models.Goods obj)
+        public async Task<IActionResult> Create([FromBody] Models.Goods obj)
         {
             await _dbOperations.CreateAsync(obj);
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
@@ -23,7 +23,7 @@ namespace Ixora_REST_API.Controllers
             return Created(fullUrl, obj);
         }
         [HttpDelete(Routes.Goods.Delete)]
-        public async Task<IActionResult> Delete([FromRoute] int Id)
+        public async Task<IActionResult> Delete(/*[FromRoute] */int Id)
         {
             var deleted = await _dbOperations.DeleteAsync(Id);
             if (deleted) return NoContent();
@@ -47,8 +47,8 @@ namespace Ixora_REST_API.Controllers
             var newThing = new Models.Goods
             {
                 //Id = Id,
-                GoodsType = obj.GoodsType,
-                GoodsTypeID = obj.GoodsTypeID,
+                //GoodsType = obj.GoodsType,
+                //GoodsTypeID = obj.GoodsTypeID,
                 LeftInStock = obj.LeftInStock,
                 Name = obj.Name,
             };

@@ -59,19 +59,11 @@ namespace Ixora_REST_API.Controllers
         [HttpPut(Routes.Orders.Update)]
         public async Task<IActionResult> Update([FromRoute] int Id, [FromBody] Order obj)
         {
-            var newOrder = new Order
-            {
-                //ID = Id,
-                ClientId = obj.ClientId,
-                OrderDetails = obj.OrderDetails,
-                //OrderDetailsId = obj.OrderDetailsId,
-                IsComplete = obj.IsComplete,
-            };
+            var newOrder = new Order(Id, obj.IsComplete);
+            newOrder.AddOrderDetails(obj.OrderDetails);
             var updated = await _dbOperations.UpdateAsync(newOrder);
             if (updated) { return Ok(newOrder); }
             else return NotFound();
         }
-
-        //Implement method that returns all orders for a given client, sort by newest
     }
 }

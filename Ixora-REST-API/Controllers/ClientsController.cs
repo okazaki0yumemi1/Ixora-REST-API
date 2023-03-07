@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ixora_REST_API.Controllers
 {
-    [Route("/api/clients")]
     [ApiController]
     public class ClientsController : ControllerBase, IController<Client>
     {

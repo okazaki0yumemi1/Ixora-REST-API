@@ -7,7 +7,7 @@ namespace Ixora_REST_API.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ID { get; set; }
+        public int ID { get; private set; }
         public string GroupName { get; set; }
 
         public GoodsType()
