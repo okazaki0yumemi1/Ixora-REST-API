@@ -17,15 +17,16 @@ namespace Ixora_REST_API.Controllers
         [HttpPost(Routes.Goods.Create)]
         public async Task<IActionResult> Create([FromBody] Models.Goods obj)
         {
+            if ((obj.Name == string.Empty) || (obj.Price < 0) || (obj.LeftInStock < 0)) return BadRequest();
             await _dbOperations.CreateAsync(obj);
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
             var fullUrl = baseUrl + "/" + Routes.Goods.Get.Replace("{goodsId}", obj.Id.ToString());
             return Created(fullUrl, obj);
         }
         [HttpDelete(Routes.Goods.Delete)]
-        public async Task<IActionResult> Delete(/*[FromRoute] */int Id)
+        public async Task<IActionResult> Delete([FromRoute] int goodsId)
         {
-            var deleted = await _dbOperations.DeleteAsync(Id);
+            var deleted = await _dbOperations.DeleteAsync(goodsId);
             if (deleted) return NoContent();
             else return NotFound();
         }
@@ -35,25 +36,20 @@ namespace Ixora_REST_API.Controllers
             return Ok(await _dbOperations.GetAllAsync());
         }
         [HttpGet(Routes.Goods.Get)]
-        public async Task<IActionResult> GetByID([FromRoute] int Id)
+        public async Task<IActionResult> GetByID([FromRoute] int goodsId)
         {
-            var goods = await _dbOperations.GetByIDAsync(Id);
+            var goods = await _dbOperations.GetByIDAsync(goodsId);
             if (goods == null) return NotFound();
             return Ok(goods);
         }
         [HttpPut(Routes.Goods.Update)]
-        public async Task<IActionResult> Update([FromRoute] int Id, [FromBody] Models.Goods obj)
+        public async Task<IActionResult> Update([FromRoute] int goodsId, [FromBody] Models.Goods obj)
         {
-            var newThing = new Models.Goods
-            {
-                //Id = Id,
-                //GoodsType = obj.GoodsType,
-                //GoodsTypeID = obj.GoodsTypeID,
-                LeftInStock = obj.LeftInStock,
-                Name = obj.Name,
-            };
-            var updated = await _dbOperations.UpdateAsync(newThing);
-            if (updated) { return Ok(newThing); }
+            if ((obj.Price < 0) || (obj.Name == string.Empty) || (obj.LeftInStock < 0)) return BadRequest();
+            thing.LeftInStock = obj.LeftInStock;
+            thing.Name = obj.Name;
+            var updated = await _dbOperations.UpdateAsync(thing);
+            if (updated) { return Ok(thing); }
             else return NotFound();
         }
     }

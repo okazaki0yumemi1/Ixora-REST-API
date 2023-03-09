@@ -15,55 +15,63 @@ namespace Ixora_REST_API.Controllers
         {
             _dbOperations = dbOperations;
         }
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPost(Routes.Details.CreateDetails)]
         public async Task<IActionResult> Create([FromBody] OrderDetails obj)
         {
-            await _dbOperations.CreateAsync(obj);
-            var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
-            var fullUrl = baseUrl + "/" + Routes.Orders.Get.Replace("{orderId}", obj.Order.ID.ToString() + "/details/" + obj.Id);
-            return Created(fullUrl, obj);
-            //This should work, but I have to test it later
+            throw new NotImplementedException();
         }
+        //[HttpPost(Routes.Details.CreateDetails)]
+        //public async Task<IActionResult> Create([FromBody] OrderDetails obj)
+        //{
+        //    var newDetails = new OrderDetails();
+
+        //    newDetails.ItemPrice = obj.ItemPrice;
+        //    newDetails.Count = obj.Count;
+        //    newDetails.GoodsId = obj.GoodsId;
+
+        //    await _dbOperations.CreateAsync(newDetails);
+        //    var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
+        //    var fullUrl = baseUrl + "/" + Routes.Orders.Get.Replace("{orderId}", obj.OrderId.ToString() + "/details/" + obj.Id);
+        //    return Created(fullUrl, obj);
+        //}
         [HttpDelete(Routes.Details.Delete)]
-        public async Task<IActionResult> Delete([FromRoute] int Id)
+        public async Task<IActionResult> Delete([FromRoute] int detailsId)
         {
-            var deleted = await _dbOperations.DeleteAsync(Id);
+            var deleted = await _dbOperations.DeleteAsync(detailsId);
             if (deleted) return NoContent();
             else return NotFound();
         }
-        [HttpDelete(Routes.Details.GetAll + "/meow")]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [HttpDelete(Routes.Details.GetAll)]
         public async Task<IActionResult> GetAll()
         {
-            return NotFound(); //it does not make any sense
+            return NotFound();
         }
 
         [HttpGet(Routes.Details.GetAll)]
         public async Task<IActionResult> GetAll([FromRoute] int orderId)
         {
             var result = await _dbOperations.GetAllAsync(orderId);
-            if (result.IsNullOrEmpty()) return Ok(result);
-            else return NotFound();
+            if (result.IsNullOrEmpty()) return NotFound();
+            else return Ok(result);
         }
         [HttpGet(Routes.Details.Get)]
-        public async Task<IActionResult> GetByID([FromRoute] int Id)
+        public async Task<IActionResult> GetByID([FromRoute] int detailsId)
         {
-            var details = await _dbOperations.GetByIDAsync(Id);
+            var details = await _dbOperations.GetByIDAsync(detailsId);
             if (details == null) return NotFound();
             return Ok(details);
         }
         [HttpPut(Routes.Details.Update)]
-        public async Task<IActionResult> Update([FromRoute] int Id, [FromBody] OrderDetails obj)
+        public async Task<IActionResult> Update([FromRoute] int detailsId, [FromBody] OrderDetails obj)
         {
-            var newDetails = new OrderDetails
-            {
-                //Id = Id,
-                Count = obj.Count,
-                Goods = obj.Goods,
-                GoodsId = obj.GoodsId,
-                ItemPrice = obj.ItemPrice,
-            };
-            var updated = await _dbOperations.UpdateAsync(newDetails);
-            if (updated) { return Ok(newDetails); }
+            if ((obj.Count < 0) || (obj.ItemPrice < 0)) return BadRequest();
+            var details = await _dbOperations.GetByIDAsync(detailsId);
+            details.ItemPrice = obj.ItemPrice;
+            details.Count = obj.Count;
+            var updated = await _dbOperations.UpdateAsync(details);
+            if (updated) { return Ok(details); }
             else return NotFound();
         }
     }

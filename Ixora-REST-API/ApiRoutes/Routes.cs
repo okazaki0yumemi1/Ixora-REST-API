@@ -21,8 +21,8 @@
         }
         public static class Details
         {
-            public const string GetAll = "api/order/{orderId}/details";
-            public const string CreateDetails = "api/orders/{orderId}/details/{detailsId}";
+            public const string GetAll = "api/order/{orderId}/details"; //Hide this
+            public const string CreateDetails = "api/orders/{orderId}/details/"; //Hide this
             public const string Get = "api/orders/{orderId}/details/{detailsId}";
             public const string Update = "api/orders/{orderId}/details/{detailsId}";
             public const string Delete = "api/orders/{orderId}/details/{detailsId}";

@@ -8,6 +8,10 @@ namespace Ixora_REST_API.Persistence
     public class OrdersDbOperations : IDbOperations<Order>
     {
         private readonly DatabaseContext _dbContext;
+        public OrdersDbOperations(DatabaseContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public async Task<bool> CreateAsync(Order obj)
         {
             await _dbContext.Orders.AddAsync(obj);

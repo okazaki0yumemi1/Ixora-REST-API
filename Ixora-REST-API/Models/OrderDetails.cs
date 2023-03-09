@@ -4,14 +4,18 @@ namespace Ixora_REST_API.Models
 {
     public class OrderDetails : Entity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; private set; }
-        public int GoodsId { get; set; } //Foreign key
-        public Goods Goods { get; set; } //Reference
-        public int OrderId { get; set; } //Foreign key
-        public Order Order { get; set; } //Reference
-        public float ItemPrice { get; set; }
-        public int Count { get; set; }
+            [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+            public int Id { get; private set; }
+            [ForeignKey("Goods")]
+            public int GoodsId { get; set; } //Foreign key
+            [ForeignKey("Order")]
+            public int OrderId { get; private set; } //Foreign key
+            public float ItemPrice { get; set; }
+            public int Count { get; set; }
 
+        public void SetID(int id)
+        {
+            this.Id = id;
+        }
     }
 }

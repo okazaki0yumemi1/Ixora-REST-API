@@ -12,7 +12,7 @@ namespace Ixora_REST_API.Models
         public DateTime CreationDate { get; set; } = DateTime.Now;
         public bool IsComplete { get; private set; } = false;
         //public List<int> OrderDetailsId { get; set; } //Foreign key
-        public IEnumerable<OrderDetails> OrderDetails { get; private set; } //Reference
+        public IEnumerable<OrderDetails> OrderDetails { get; set; } //Reference
         public Order()
         {
 
@@ -26,11 +26,16 @@ namespace Ixora_REST_API.Models
         {
             this.OrderDetails = this.OrderDetails.Union(first);
         }
-        public void UpdateDetails(OrderDetails details)
-        {
-            var temp = this.OrderDetails.Where(x => x.Id != details.Id);
-            temp.Append(details);
-            this.OrderDetails = temp;
-        }
+        //public void DeleteDetails(OrderDetails details)
+        //{
+        //    var temp = this.OrderDetails.Where(x => x.Id != details.Id);
+        //    this.OrderDetails = temp;
+        //}
+        //public void UpdateDetails(OrderDetails details)
+        //{
+        //    var temp = this.OrderDetails.Where(x => x.Id != details.Id);
+        //    temp.Append(details);
+        //    this.OrderDetails = temp;
+        //}
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.Build.Framework;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ixora_REST_API.Models
 {
@@ -6,10 +7,13 @@ namespace Ixora_REST_API.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; private set; }
-        public int? GoodsTypeID { get; set; } //Foreign key
+        [ForeignKey("GoodsType")]
+        public int GoodsTypeID { get; set; } //Foreign key
         //public GoodsType GoodsType { get; private set; } //Reference
         public string Name { get; set; }
+        [Required]
         public float Price { get; set; }
+        [Required]
         public int LeftInStock { get; set; }
         public Goods()
         {

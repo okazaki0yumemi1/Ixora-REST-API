@@ -23,9 +23,9 @@ namespace Ixora_REST_API.Controllers
             return Created(fullUrl, obj);
         }
         [HttpDelete(Routes.GoodsTypes.Delete)]
-        public async Task<IActionResult> Delete([FromRoute] int Id)
+        public async Task<IActionResult> Delete([FromRoute] int goodsTypeId)
         {
-            var deleted = await _dbOperations.DeleteAsync(Id);
+            var deleted = await _dbOperations.DeleteAsync(goodsTypeId);
             if (deleted) return NoContent();
             else return NotFound();
         }
@@ -35,22 +35,20 @@ namespace Ixora_REST_API.Controllers
             return Ok(await _dbOperations.GetAllAsync());
         }
         [HttpGet(Routes.GoodsTypes.Get)]
-        public async Task<IActionResult> GetByID([FromRoute] int Id)
+        public async Task<IActionResult> GetByID([FromRoute] int goodsTypeId)
         {
-            var goodsType = await _dbOperations.GetByIDAsync(Id);
+            var goodsType = await _dbOperations.GetByIDAsync(goodsTypeId);
             if (goodsType == null) return NotFound();
             return Ok(goodsType);
         }
         [HttpPut(Routes.GoodsTypes.Update)]
-        public async Task<IActionResult> Update([FromRoute] int Id, [FromBody] GoodsType obj)
+        public async Task<IActionResult> Update([FromRoute] int goodsTypeId, [FromBody] GoodsType obj)
         {
-            var newGroup = new GoodsType
-            {
-                GroupName = obj.GroupName,
-                //ID = Id,
-            };
-            var updated = await _dbOperations.UpdateAsync(newGroup);
-            if (updated) { return Ok(newGroup); }
+            if (obj.GroupName == string.Empty) return BadRequest();
+            var group = await _dbOperations.GetByIDAsync(goodsTypeId);
+            group.GroupName = obj.GroupName;
+            var updated = await _dbOperations.UpdateAsync(group);
+            if (updated) { return Ok(group); }
             else return NotFound();
         }
     }

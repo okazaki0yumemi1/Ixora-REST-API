@@ -20,17 +20,11 @@ namespace Ixora_REST_API.Controllers
         [HttpPost(Routes.Orders.CreateOrder)]
         public async Task<IActionResult> Create([FromBody] Order order)
         {
-            //Implement inventory check
-            var orderDetails = order.OrderDetails.ToList();
+            var orderDetails = order.OrderDetails;
             foreach (var thing in orderDetails)
             {
                 var goodsRequest = await _goodsDbOperations.GetByIDAsync(thing.GoodsId);
                 if (thing.Count > goodsRequest.LeftInStock) return BadRequest();
-                else
-                {
-                    goodsRequest.LeftInStock -= thing.Count;
-                    await _goodsDbOperations.UpdateAsync(goodsRequest);
-                }
             }
             await _dbOperations.CreateAsync(order);
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
@@ -38,9 +32,9 @@ namespace Ixora_REST_API.Controllers
             return Created(fullUrl, order);
         }
         [HttpDelete(Routes.Orders.Delete)]
-        public async Task<IActionResult> Delete([FromRoute] int Id)
+        public async Task<IActionResult> Delete([FromRoute] int orderId)
         {
-            var deleted = await _dbOperations.DeleteAsync(Id);
+            var deleted = await _dbOperations.DeleteAsync(orderId);
             if (deleted) return NoContent();
             else return NotFound();
         }
@@ -50,16 +44,16 @@ namespace Ixora_REST_API.Controllers
             return Ok(await _dbOperations.GetAllAsync());
         }
         [HttpGet(Routes.Orders.Get)]
-        public async Task<IActionResult> GetByID([FromRoute] int Id)
+        public async Task<IActionResult> GetByID([FromRoute] int orderId)
         {
-            var order = await _dbOperations.GetByIDAsync(Id);
+            var order = await _dbOperations.GetByIDAsync(orderId);
             if (order == null) return NotFound();
             return Ok(order);
         }
         [HttpPut(Routes.Orders.Update)]
-        public async Task<IActionResult> Update([FromRoute] int Id, [FromBody] Order obj)
+        public async Task<IActionResult> Update([FromRoute] int orderId, [FromBody] Order obj)
         {
-            var newOrder = new Order(Id, obj.IsComplete);
+            var newOrder = new Order(orderId, obj.IsComplete);
             newOrder.AddOrderDetails(obj.OrderDetails);
             var updated = await _dbOperations.UpdateAsync(newOrder);
             if (updated) { return Ok(newOrder); }

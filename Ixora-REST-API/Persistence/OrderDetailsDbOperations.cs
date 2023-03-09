@@ -4,39 +4,35 @@ using System.Net;
 using System.Linq;
 using Microsoft.IdentityModel.Tokens;
 using System.Runtime.Serialization;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace Ixora_REST_API.Persistence
 {
     public class OrderDetailsDbOperations : IDbOperations<OrderDetails>
     {
         private readonly DatabaseContext _dbContext;
+        public OrderDetailsDbOperations (DatabaseContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public async Task<bool> CreateAsync(OrderDetails obj)
         {
             var order = await _dbContext.Orders.FindAsync(obj.OrderId);
-            if (order != null) order.OrderDetails.Append(obj);
+            if (order != null) await _dbContext.OrderDetails.AddAsync(obj);
             else return false;
-            var createdOrders = await _dbContext.SaveChangesAsync();
-            return (createdOrders > 0);
+            var created = await _dbContext.SaveChangesAsync();
+            return (created > 0);
         }
 
         public async Task<bool> DeleteAsync(int ID)
         {
-            var order = await _dbContext.Orders.FirstOrDefaultAsync(x => x.OrderDetails.Any(y => y.Id == ID) == true);
-            if (order != null)
+            var orderDetails = await _dbContext.OrderDetails.Where(x => x.Id == ID).FirstOrDefaultAsync();
+            if (orderDetails != null)
             {
-                Order newOrder = new Order
-                {
-                    //Client = order.Client,
-                    //ClientId = order.ClientId,
-                    CreationDate = order.CreationDate,
-                    //ID = order.ID,
-                    //IsComplete = order.IsComplete,
-                    //OrderDetails = order.OrderDetails.Where(x => x.Id != ID)
-                };
-                await _dbContext.Orders.AddAsync(newOrder);
-                _dbContext.Orders.Remove(order);
+                var toDelete = orderDetails;
+                _dbContext.Remove(toDelete);
                 var changes = await _dbContext.SaveChangesAsync();
-                return (changes > 1);
+                return (changes > 0);
             }
             else return false;
         }
@@ -57,13 +53,15 @@ namespace Ixora_REST_API.Persistence
 
         public async Task<bool> UpdateAsync(OrderDetails obj)
         {
-            var order = await _dbContext.Orders.FirstOrDefaultAsync(x => x.OrderDetails.Any(y => y.Id == obj.Id) == true);
-            if (order != null)
+            var orderDetails = await _dbContext.OrderDetails.Where(x => x.Id == obj.Id).FirstOrDefaultAsync();
+            if (orderDetails != null)
             {
-                order.UpdateDetails(obj);
-                _dbContext.Orders.Update(order);
+                orderDetails.ItemPrice = obj.ItemPrice;
+                orderDetails.Count = obj.Count;
+                orderDetails.GoodsId = obj.GoodsId;
+                _dbContext.OrderDetails.Update(orderDetails);
                 var changes = await _dbContext.SaveChangesAsync();
-                return (changes > 1);
+                return (changes > 0);
             }
             else return false;
         }
