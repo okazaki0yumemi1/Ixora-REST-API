@@ -68,7 +68,8 @@ namespace Ixora_REST_API.Controllers
         {
             if ((obj.Count < 0) || (obj.ItemPrice < 0)) return BadRequest();
             var details = await _dbOperations.GetByIDAsync(detailsId);
-            details.ItemPrice = obj.ItemPrice;
+            if (details == null) return NotFound();
+            //details.ItemPrice = obj.ItemPrice; //not sure if it would be useful at all
             details.Count = obj.Count;
             var updated = await _dbOperations.UpdateAsync(details);
             if (updated) { return Ok(details); }

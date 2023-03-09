@@ -15,6 +15,15 @@ namespace Ixora_REST_API.Persistence
         public async Task<bool> CreateAsync(Order obj)
         {
             await _dbContext.Orders.AddAsync(obj);
+            foreach (var detail in obj.OrderDetails)
+            {
+                var thing = await _dbContext.Goods.SingleOrDefaultAsync(x => x.Id == detail.GoodsId);
+                thing.LeftInStock -= detail.Count;
+                if (thing.LeftInStock < 0) return false; 
+                //В данный момент можно сделать два OrderDetails по одному id, заказав сначала весь остаток, потом ещё больше, уведя в минус наличие. 
+                //По идее, это должно валидироваться на frontend'е, но тут на всякий случай я всё же введу проверку.
+                _dbContext.Goods.Update(thing);
+            }
             var createdOrders = await _dbContext.SaveChangesAsync();
             return (createdOrders > 0);
         }
@@ -22,6 +31,7 @@ namespace Ixora_REST_API.Persistence
         public async Task<bool> DeleteAsync(int ID)
         {
             var exist = await GetByIDAsync(ID);
+            if (exist == null) return false;
             _dbContext.Orders.Remove(exist);
             var deletedOrders = await _dbContext.SaveChangesAsync();
             return (deletedOrders > 0);

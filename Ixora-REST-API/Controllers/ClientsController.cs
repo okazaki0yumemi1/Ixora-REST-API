@@ -1,6 +1,7 @@
 using Ixora_REST_API.ApiRoutes;
 using Ixora_REST_API.Models;
 using Ixora_REST_API.Persistence;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ixora_REST_API.Controllers
@@ -34,7 +35,7 @@ namespace Ixora_REST_API.Controllers
         }
         [HttpPost(Routes.Clients.CreateClient)]
         public async Task<IActionResult> Create([FromBody] Client client)
-         {
+        {
             if ((client.ClientName == string.Empty) || (client.PhoneNumber == string.Empty)) return BadRequest();
             await _dbOperations.CreateAsync(client);
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
@@ -46,6 +47,7 @@ namespace Ixora_REST_API.Controllers
         public async Task<IActionResult> Update([FromRoute] int clientId, [FromBody] Client client)
         {
             var oldClient = await _dbOperations.GetByIDAsync(clientId);
+            if (oldClient == null) return NotFound();
             oldClient.ClientName = client.ClientName;
             oldClient.PhoneNumber = client.PhoneNumber;
             var updated = await _dbOperations.UpdateAsync(oldClient);
@@ -59,6 +61,15 @@ namespace Ixora_REST_API.Controllers
             var deleted = await _dbOperations.DeleteAsync(clientId);
             if (deleted) return NoContent();
             else return NotFound();
+        }
+        [HttpGet(Routes.Clients.GetByMonth)]
+        public async Task<IActionResult> GetOrdersTimeSpan([FromRoute] int clientId, [FromRoute] int monthNumber)
+        {
+            var orders = await _dbOperations.GetClientOrders(clientId);
+            if (orders == null) return NoContent();
+            var byMonth = orders.Where(x => x.CreationDate.Month == monthNumber).ToList();
+            if (byMonth == null) return NoContent();
+            else return Ok(byMonth);
         }
     }
 }

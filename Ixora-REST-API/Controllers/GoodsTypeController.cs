@@ -46,6 +46,7 @@ namespace Ixora_REST_API.Controllers
         {
             if (obj.GroupName == string.Empty) return BadRequest();
             var group = await _dbOperations.GetByIDAsync(goodsTypeId);
+            if (group == null) return NotFound();
             group.GroupName = obj.GroupName;
             var updated = await _dbOperations.UpdateAsync(group);
             if (updated) { return Ok(group); }

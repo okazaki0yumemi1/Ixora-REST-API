@@ -9,7 +9,7 @@ namespace Ixora_REST_API.Models
         [ForeignKey("Client")]
         public int ClientId { get; set; } //Foreign key
         //public Client Client { get; private set; } //Reference
-        public DateTime CreationDate { get; set; } = DateTime.Now;
+        public DateTime CreationDate { get; private set; } = DateTime.Now;
         public bool IsComplete { get; private set; } = false;
         //public List<int> OrderDetailsId { get; set; } //Foreign key
         public IEnumerable<OrderDetails> OrderDetails { get; set; } //Reference
@@ -22,20 +22,13 @@ namespace Ixora_REST_API.Models
             ID = ClientId;
             IsComplete = OrderStatus;
         }
-        public void AddOrderDetails(IEnumerable<OrderDetails> first)
+        //public void AddOrderDetails(IEnumerable<OrderDetails> first)
+        //{
+        //    this.OrderDetails = this.OrderDetails.Union(first);
+        //}
+        public void ChangeStatus(bool newStatus)
         {
-            this.OrderDetails = this.OrderDetails.Union(first);
+            this.IsComplete = newStatus;
         }
-        //public void DeleteDetails(OrderDetails details)
-        //{
-        //    var temp = this.OrderDetails.Where(x => x.Id != details.Id);
-        //    this.OrderDetails = temp;
-        //}
-        //public void UpdateDetails(OrderDetails details)
-        //{
-        //    var temp = this.OrderDetails.Where(x => x.Id != details.Id);
-        //    temp.Append(details);
-        //    this.OrderDetails = temp;
-        //}
     }
 }

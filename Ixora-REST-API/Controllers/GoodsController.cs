@@ -46,6 +46,8 @@ namespace Ixora_REST_API.Controllers
         public async Task<IActionResult> Update([FromRoute] int goodsId, [FromBody] Models.Goods obj)
         {
             if ((obj.Price < 0) || (obj.Name == string.Empty) || (obj.LeftInStock < 0)) return BadRequest();
+            var thing = await _dbOperations.GetByIDAsync(goodsId);
+            if (thing == null) return NotFound();
             thing.LeftInStock = obj.LeftInStock;
             thing.Name = obj.Name;
             var updated = await _dbOperations.UpdateAsync(thing);

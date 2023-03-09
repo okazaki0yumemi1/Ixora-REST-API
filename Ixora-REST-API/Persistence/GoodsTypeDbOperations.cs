@@ -20,6 +20,7 @@ namespace Ixora_REST_API.Persistence
         public async Task<bool> DeleteAsync(int ID)
         {
             var exist = await GetByIDAsync(ID);
+            if (exist == null) return false;
             _dbContext.GoodsTypes.Remove(exist);
             var deletedGroups = await _dbContext.SaveChangesAsync();
             return (deletedGroups > 0);

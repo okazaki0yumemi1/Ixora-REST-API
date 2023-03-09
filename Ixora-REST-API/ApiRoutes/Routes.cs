@@ -10,6 +10,7 @@
             public const string Update = "api/clients/{clientId}";
             public const string Delete = "api/clients/{clientId}";
             public const string GetClientOrders = "api/clients/{clientId}/orders";
+            public const string GetByMonth = "api/clients/{clientId}/orders/{monthNumber}";
         }
         public static class Orders
         {

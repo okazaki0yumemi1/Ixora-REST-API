@@ -56,7 +56,7 @@ namespace Ixora_REST_API.Persistence
             var orderDetails = await _dbContext.OrderDetails.Where(x => x.Id == obj.Id).FirstOrDefaultAsync();
             if (orderDetails != null)
             {
-                orderDetails.ItemPrice = obj.ItemPrice;
+                //orderDetails.ItemPrice = obj.ItemPrice; //again, it's not really useful
                 orderDetails.Count = obj.Count;
                 orderDetails.GoodsId = obj.GoodsId;
                 _dbContext.OrderDetails.Update(orderDetails);

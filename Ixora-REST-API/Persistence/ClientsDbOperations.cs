@@ -14,7 +14,7 @@ namespace Ixora_REST_API.Persistence
         {
             await _dbContext.Clients.AddAsync(client);
             var createdClients = await _dbContext.SaveChangesAsync();
-            return (createdClients > 0);
+            return (createdClients > 1);
         }
         public async Task<List<Client>> GetAllAsync()
         {
@@ -37,9 +37,10 @@ namespace Ixora_REST_API.Persistence
         public async Task<bool> DeleteAsync(int ID)
         {
             var exist = await GetByIDAsync(ID);
+            if (exist == null) return false;
             _dbContext.Clients.Remove(exist);
             var deletedClients = await _dbContext.SaveChangesAsync();
-            return (deletedClients > 0);
+            return (deletedClients > 1);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Ixora_REST_API.Models
             public int GoodsId { get; set; } //Foreign key
             [ForeignKey("Order")]
             public int OrderId { get; private set; } //Foreign key
-            public float ItemPrice { get; set; }
+            public float ItemPrice { get; private set; }
             public int Count { get; set; }
 
         public void SetID(int id)

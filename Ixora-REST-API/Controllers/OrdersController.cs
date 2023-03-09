@@ -24,16 +24,18 @@ namespace Ixora_REST_API.Controllers
             foreach (var thing in orderDetails)
             {
                 var goodsRequest = await _goodsDbOperations.GetByIDAsync(thing.GoodsId);
+                if (goodsRequest == null) return BadRequest();
                 if (thing.Count > goodsRequest.LeftInStock) return BadRequest();
             }
             await _dbOperations.CreateAsync(order);
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
-            var fullUrl = baseUrl + "/" + Routes.Clients.Get.Replace("{orderId}", order.ID.ToString());
+            var fullUrl = baseUrl + "/" + Routes.Orders.Get.Replace("{orderId}", order.ID.ToString());
             return Created(fullUrl, order);
         }
         [HttpDelete(Routes.Orders.Delete)]
         public async Task<IActionResult> Delete([FromRoute] int orderId)
         {
+            
             var deleted = await _dbOperations.DeleteAsync(orderId);
             if (deleted) return NoContent();
             else return NotFound();
@@ -53,8 +55,9 @@ namespace Ixora_REST_API.Controllers
         [HttpPut(Routes.Orders.Update)]
         public async Task<IActionResult> Update([FromRoute] int orderId, [FromBody] Order obj)
         {
-            var newOrder = new Order(orderId, obj.IsComplete);
-            newOrder.AddOrderDetails(obj.OrderDetails);
+            var newOrder = await _dbOperations.GetByIDAsync(orderId);
+            if (newOrder == null) return NotFound();
+            newOrder.ChangeStatus(obj.IsComplete);
             var updated = await _dbOperations.UpdateAsync(newOrder);
             if (updated) { return Ok(newOrder); }
             else return NotFound();
