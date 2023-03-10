@@ -33,7 +33,6 @@ namespace Ixora_REST_API.Persistence
             {
                 var client = await _dbContext.Clients.SingleOrDefaultAsync(x => x.Id == ID);
                 _cache.Set(key, client, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(7)));
-                //_cache.TryGetValue(key, out Models.Client mrr);
                 Console.WriteLine($"{DateTime.Now}: Client with Id={ID} was added to cache with key={key} was added to cache.");
                 return client;
             }

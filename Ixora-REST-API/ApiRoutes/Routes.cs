@@ -35,6 +35,7 @@
             public const string Get = "api/goods/{goodsId}";
             public const string Update = "api/goods/{goodsId}";
             public const string Delete = "api/goods/{goodsId}";
+            public const string GetAllAvailable = "api/goods/inventory/{isInStock}";
         }
         public static class GoodsTypes
         {

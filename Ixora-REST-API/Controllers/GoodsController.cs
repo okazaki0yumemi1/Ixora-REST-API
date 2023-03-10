@@ -54,5 +54,13 @@ namespace Ixora_REST_API.Controllers
             if (updated) { return Ok(thing); }
             else return NotFound();
         }
+        [HttpGet(Routes.Goods.GetAllAvailable)]
+        public async Task<IActionResult> GetAllAvailable([FromRoute] bool isInStock)
+        {
+            var inventory = await _dbOperations.GetAllAsync();
+            inventory.RemoveAll(x => x.LeftInStock > 0 != isInStock);
+            if (inventory.Count == 0) return NoContent();
+            else return Ok(inventory);
+        }
     }
 }
