@@ -4,6 +4,8 @@ using Ixora_REST_API.ApiRoutes;
 using Ixora_REST_API.Controllers;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Ixora_REST_API.Models;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +22,8 @@ builder.Services.AddScoped<OrdersDbOperations, OrdersDbOperations>();
 builder.Services.AddScoped<OrderDetailsDbOperations, OrderDetailsDbOperations>();
 builder.Services.AddScoped<GoodsDbOperations, GoodsDbOperations>();
 builder.Services.AddScoped<GoodsTypeDbOperations, GoodsTypeDbOperations>();
+//builder.Services.AddMemoryCache();
+builder.Services.TryAdd(ServiceDescriptor.Singleton<IMemoryCache, MemoryCache>());
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
