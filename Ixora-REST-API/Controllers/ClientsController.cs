@@ -22,11 +22,15 @@ namespace Ixora_REST_API.Controllers
             return Ok(client);
         }
         [HttpGet(Routes.Clients.GetClientOrders)]
-        public async Task<IActionResult> GetClientOrders([FromRoute] int clientId)
+        public async Task<IActionResult> GetClientOrders([FromRoute] int clientId, [FromQuery] int? month)
         {
-            var orders = await _dbOperations.GetClientOrders(clientId);
-            if (orders == null) return NoContent();
-            return Ok(orders);
+            if (month == null) return Ok(await _dbOperations.GetClientOrders(clientId));
+            else
+            {
+                var orders = await _dbOperations.GetClientOrders(clientId);
+                if ((month < 0) && (month > 12)) return BadRequest();
+                return Ok(orders.Where(x => x.CreationDate.Month == month));
+            }
         }
         [HttpGet(Routes.Clients.GetAll)]
         public async Task<IActionResult> GetAll()
@@ -62,14 +66,21 @@ namespace Ixora_REST_API.Controllers
             if (deleted) return NoContent();
             else return NotFound();
         }
-        [HttpGet(Routes.Clients.GetByMonth)]
-        public async Task<IActionResult> GetOrdersTimeSpan([FromRoute] int clientId, [FromRoute] int monthNumber)
-        {
-            var orders = await _dbOperations.GetClientOrders(clientId);
-            if (orders == null) return NoContent();
-            var byMonth = orders.Where(x => x.CreationDate.Month == monthNumber).ToList();
-            if (byMonth == null) return NoContent();
-            else return Ok(byMonth);
-        }
+        //[HttpGet((Routes.Clients.GetClientOrders) + "/")]
+        //public List<Order> FilterByMonth (List<Order> orders, int monthNumber, bool isCompleted)//[FromRoute] int monthNumber)
+        //{
+
+        //    //var orders = await _dbOperations.GetClientOrders(clientId);
+        //    //if (orders == null) return NoContent();
+        //    ////List<Order>? results;
+        //    ////if (isCompleted != null)
+        //    ////{
+        //    ////    results = orders.Where(x => (x.IsComplete && isCompleted) == true).ToList();
+        //    ////}
+        //    ////var results = orders.Where(x => x.IsComplete == isCompleted).ToList();
+        //    ////var results = orders.Where(x => x.CreationDate.Month == monthNumber).ToList();
+        //    ////if (results == null) return null;
+        //    ////else return results;
+        //}
     }
 }

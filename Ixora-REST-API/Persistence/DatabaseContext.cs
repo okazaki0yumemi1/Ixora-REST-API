@@ -7,7 +7,7 @@ namespace Ixora_REST_API.Persistence
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
-            
+
         }
 
         public DbSet<Models.Client> Clients { get; set; }

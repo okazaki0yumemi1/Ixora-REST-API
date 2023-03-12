@@ -10,7 +10,7 @@
             public const string Update = "api/clients/{clientId}";
             public const string Delete = "api/clients/{clientId}";
             public const string GetClientOrders = "api/clients/{clientId}/orders";
-            public const string GetByMonth = "api/clients/{clientId}/orders/{monthNumber}";
+            //public const string GetByMonth = "api/clients/{clientId}/orders";
         }
         public static class Orders
         {
@@ -35,7 +35,7 @@
             public const string Get = "api/goods/{goodsId}";
             public const string Update = "api/goods/{goodsId}";
             public const string Delete = "api/goods/{goodsId}";
-            public const string GetAllAvailable = "api/goods/inventory/{isInStock}";
+            public const string GetAllAvailable = "api/goods/";
         }
         public static class GoodsTypes
         {

@@ -63,6 +63,7 @@ namespace Ixora_REST_API.Controllers
             if (details == null) return NotFound();
             return Ok(details);
         }
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPut(Routes.Details.Update)]
         public async Task<IActionResult> Update([FromRoute] int detailsId, [FromBody] OrderDetails obj)
         {
