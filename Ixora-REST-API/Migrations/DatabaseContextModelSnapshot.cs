@@ -40,7 +40,7 @@ namespace Ixora_REST_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("Ixora_REST_API.Models.Goods", b =>
@@ -66,7 +66,7 @@ namespace Ixora_REST_API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Goods");
+                    b.ToTable("Goods", (string)null);
                 });
 
             modelBuilder.Entity("Ixora_REST_API.Models.GoodsType", b =>
@@ -83,7 +83,7 @@ namespace Ixora_REST_API.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("GoodsTypes");
+                    b.ToTable("GoodsTypes", (string)null);
                 });
 
             modelBuilder.Entity("Ixora_REST_API.Models.Order", b =>
@@ -105,7 +105,7 @@ namespace Ixora_REST_API.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("Ixora_REST_API.Models.OrderDetails", b =>
@@ -132,7 +132,7 @@ namespace Ixora_REST_API.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("Ixora_REST_API.Models.OrderDetails", b =>

@@ -33,9 +33,10 @@ namespace Ixora_REST_API.Controllers
         [HttpGet(Routes.Goods.GetAll)]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _dbOperations.GetAllAsync();
-            if (result == null) return NoContent();
-            else return Ok(result);
+            //var result = await _dbOperations.GetAllAsync();
+            //if (result == null) return NoContent();
+            //else
+            return Ok(await _dbOperations.GetAllAsync());
         }
         [HttpGet(Routes.Goods.Get)]
         public async Task<IActionResult> GetByID([FromRoute] int goodsId)
